@@ -225,14 +225,14 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		for(char x : string.toCharArray()) {
-			if(Character.isAlphabetic(x)) {
+		for (char x : string.toCharArray()) {
+			if (Character.isAlphabetic(x)) {
 				throw new IllegalArgumentException("Can not have letters in a phone number");
 			}
 		}
 		String[] nums = string.split("[.\\(\\)\\s-]+");
-		for(String s : nums) {
-			if(s.length() > 4) {
+		for (String s : nums) {
+			if (s.length() > 4) {
 				throw new IllegalArgumentException("Invalid phone number");
 			}
 		}
@@ -526,27 +526,32 @@ public class EvaluationService {
 		if (i == 0) {
 			throw new IllegalArgumentException("No such thing");
 		}
-		int count = 2;
-		if (i == 1) {
-			return 2;
-		} else if (i == 2) {
-			return 3;
-		} else {
-			for (int x = 5; x > 2; x++) {
-				for (int j = x - 1; j >= 2; j--) {
-					if (x % j == 0) {
-						break;
-					} else if (j == 2) {
-						count++;
-						if (count == i) {
-							return x;
-						}
-					}
-				}
+		int count = 0;
+		int check = 1;
+		do {
+			check++;
+			if (isPrime(check)) {
+				count++;
 			}
+		} while (count != i);
+		return check;
+	}
 
+	boolean isPrime(int num) {
+		boolean prime = false;
+		int flag = 1;
+		int half = num / 2;
+		for (int i = 2; i <= half; i++) {
+			if (num % i == 0) {
+				flag = 0;
+				prime = false;
+				break;
+			}
 		}
-		return -1;
+		if (flag == 1) {
+			return true;
+		}
+		return prime;
 	}
 
 	/**
@@ -873,7 +878,7 @@ public class EvaluationService {
 		switch (operation) {
 		case "plus":
 		case "minus":
-			sNum = Integer.parseInt(separated[4].substring(0, separated[4].length()-1));
+			sNum = Integer.parseInt(separated[4].substring(0, separated[4].length() - 1));
 			if (operation.equals("plus"))
 				return fNum + sNum;
 			else
