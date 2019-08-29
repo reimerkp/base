@@ -52,8 +52,7 @@ where "Name" = 'Creedence Clearwater Revival';
 
 --Join commands
 
-select * from "Customer";
-select * from "Invoice";
+
 
 --Inner join the firstName column from customer and invoiceID column from invoice based on the customerId in both, ordering alphabetically by first name
 select "FirstName", "InvoiceId" from "Customer" c inner join "Invoice" e on e."CustomerId" = c."CustomerId" order by "FirstName";
@@ -74,3 +73,82 @@ m."FirstName"|| ' ' || m."LastName" manager
 from "Employee" e
 inner join "Employee" m on m."EmployeeId" = e."ReportsTo" 
 order by manager;
+
+-- joining customer table and invoice table showing the full name of each customer and how much they have spent
+select e."FirstName"|| ' ' || e."LastName" FULL_NAME,
+	sum(i."Total") from "Customer" e join "Invoice" i on e."CustomerId" = i."CustomerId" group by FULL_NAME;
+
+--Finding the sales rep that made the most sales using the customer table to find the employee and the invoice table
+--to find the customer with the most purchased
+select e."FirstName" || ' ' || e."LastName" EMPLOYEE_NAME from "Employee" e 
+where e."EmployeeId" = (select c."SupportRepId" from "Customer" c 
+where "CustomerId" = (select "CustomerId" from "Invoice" 
+where "Total" = (select max(c."Total") TOTAL from "Invoice" c)));
+
+--finds the number of purchases of each Genre using invoice line to count the number of sales for each track and 
+-- the Genre table to get the name of each genre per track
+select g."Name", "genre_id_total"."sum" as "Num of Purchases" from "Genre" g 
+join (select sum(e."Quantity"),t."GenreId" from "InvoiceLine" e join "Track" t on e."TrackId" = t."TrackId"
+group by t."GenreId") as "genre_id_total" on g."GenreId" = "genre_id_total"."GenreId" order by "Num of Purchases" desc;
+
+--------------------------------------------------------------------------------------------------
+
+--Functions 
+
+
+--Function which returns the average of the total column from the invoice table
+create or replace function invoiceAverage() returns float as $average$
+declare average float;
+begin 
+	select avg(e."Total") into average from "Invoice" e ;
+	return average;
+end; $average$
+language plpgsql;
+
+
+-- Return a table consisting of all employees born after 1968 with their first name and their birthdate 
+create or replace function employeesAfter1968() 
+returns table(
+full_name varchar(20),
+birthdate timestamp)
+as $$
+begin
+	return QUERY select 
+	e."FirstName",
+	e."BirthDate"
+	from
+	"Employee" e
+	where 
+	"BirthDate" >= '1/1/1969';
+end;$$
+language plpgsql;
+
+select employeesAfter1968();
+
+--Function that returns the manager given the employee id
+create or replace function getManager(id integer) returns 
+Table(
+	Manager_FName varchar,
+	Manager_LName varchar
+) as $$
+begin 
+   return query select m."FirstName", m."LastName" from "Employee" m where m."EmployeeId" = (
+select	e."ReportsTo" 
+	from "Employee" e
+	where e."EmployeeId" = id);
+end $$
+language plpgsql;
+
+-- function that returns the total price of a given playlist
+create or replace function getPlaylistPrice(id integer) returns numeric(10,2) as $$
+declare total numeric(10,2);
+begin
+	total := (select sum(t."UnitPrice") from "Track" t 
+	join (
+	select * from "PlaylistTrack" where "PlaylistId" = id
+	) as p_id_t_id on t."TrackId" = p_id_t_id."TrackId");
+	return total;
+end
+$$
+language plpgsql;
+
