@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Edit Profile</title>
+<link rel="stylesheet" type="text/css"href="static/HTML/common.css">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="/Project1/home">Home</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarNav" aria-controls="navbarNav"
+			aria-expanded="false">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item active"><a class="nav-link"
+					href="/Project1/profile">Profile <span class="sr-only">(current)</span>
+				</a></li>
+				<li class="nav-item active"><a class="nav-link"
+					href="/Project1/requestReinb">Request Reinbursement</a></li>
+				<li class="nav-item active" id = "allReq"><a class="nav-link"
+					href="/Project1/getAllRequests">All Requests</a></li>
+				<li class="nav-item active" id = "allEmp"><a class="nav-link"
+					href="/Project1/getAllEmployees">All Employees</a></li>
+			</ul>
+		</div>
+		<span class="navbar-nav"> <a class="nav-link" id="log-out">Log
+				Out</a>
+		</span>
+	</nav>
+	<div class="container-fluid">
+		<div class="row justify-content-md-center">
+			<div class=".col-md-4">
+				<img class="img-fluid"
+					src="https://www.sackettwaconia.com/wp-content/uploads/default-profile.png"
+					id="profImg" style="width: 200px; height: 200px; !important"
+					alt="default">
+			</div>
+
+		</div>
+		<div class="row justify-content-lg-center">
+			<div class="form-horizontal">
+				<div class="form-group">
+					<label for="inputPic" class=".col-xs-4 control-label">New
+						Profile Picture:</label>
+					<div class="col-lg-4">
+						<input type='file' name="pic" id="pic" accept="image/*"
+							onchange="getImg(this)">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputFName" class=".col-xs-4 control-label">First
+						Name:</label>
+					<div class="col-lg-4">
+						<input type='text' name="fName" id="fName" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputLName" class=".col-xs-4  control-label">Last
+						Name:</label>
+					<div class="col-lg-4">
+						<input type='text' name="lName" id="lName" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class=".col-xs-4  control-label">Email:</label>
+					<div class="col-lg-4">
+						<input type="text" name="email" id="email" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputPass" class=".col-xs-4 control-label">Change
+						Password:</label>
+
+					<div class=".col-xs-4">
+						<input type="text" id="oldP" name="pwd1"
+							placeholder="Old Password" oninput="checkPass()" />
+					</div>
+					<div class=".col-xs-4">
+						<h6 id="pwdMsg"></h6>
+					</div>
+
+
+					<div class=".col-xs-4">
+						<input type="text" id="newP1" name="pwd2"
+							placeholder="New Password" onchange="checkPass()" /><br> <input
+							type="text" id="newP2" name="pwd3" placeholder="New Password"
+							onchange="checkPass()" />
+					</div>
+
+				</div>
+				<input type="text" id="empId" name="empId" hidden=true /> <input
+					type="text" id="imgId" name="imgId" hidden=true />
+				<button type="submit" class="btn btn-default" id="sbmit"
+					style="float: right">submit</button>
+				<button type="button" id="cancel" style="float: right"
+					class="btn btn-danger">Cancel</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="static/Scripts/commonJS.js"></script>
+	<script src="static/Scripts/editProf.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+</body>
+</html>
